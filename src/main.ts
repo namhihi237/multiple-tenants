@@ -4,6 +4,8 @@ import { connectionSource } from './orm.config';
 import { getTenantConnection } from './modules/tenancy/tenancy.utils';
 import { tenancyMiddleware } from './modules/tenancy/tenancy.middleware';
 import { ValidationPipe } from '@nestjs/common';
+import { TransformInterceptor } from './common/interceptor/response.interceptor';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -16,6 +18,7 @@ async function bootstrap() {
   });
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   await connectionSource.connect();
   const schemas = await connectionSource.query('select schema_name as name from information_schema.schemata;');
