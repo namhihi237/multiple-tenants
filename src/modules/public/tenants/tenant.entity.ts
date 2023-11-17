@@ -1,6 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
 import { AbstractEntity } from '../../../abstract.entity';
-
+import { User } from '../user/user.entity';
 @Entity({ name: 'tenants', schema: 'public' })
 export class Tenant extends AbstractEntity {
   @Column({ nullable: true })
@@ -13,7 +13,7 @@ export class Tenant extends AbstractEntity {
   lastModifierUserId: number;
 
   @Column({ default: false })
-  isDelete: boolean;
+  isDeleted: boolean;
 
   @Column({ nullable: true })
   deleteTime: Date;
@@ -44,4 +44,8 @@ export class Tenant extends AbstractEntity {
 
   @Column({ nullable: true })
   tenantDatabaseId: number;
+
+  @OneToOne(() => User, user => user.tenant)
+  @JoinColumn({ name: 'creator_user_id' })
+  user: User;
 }

@@ -6,6 +6,7 @@ import { TenantsModule } from './modules/public/tenants/tenants.module';
 import typeorm from './orm.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TenancyModule } from './modules/tenancy/tenancy.module';
+import { UserModule } from './modules/public/user/user.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TenancyModule } from './modules/tenancy/tenancy.module';
     }),
     TenantsModule,
     TenancyModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
