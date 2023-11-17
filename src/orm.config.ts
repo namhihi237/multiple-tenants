@@ -6,7 +6,7 @@ import { SnakeNamingStrategy } from './snake-naming.strategy';
 import { join } from 'path';
 const { HOST, PORT, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
 
-const config = {
+export const config = {
   type: 'postgres',
   host: HOST,
   port: PORT,
