@@ -7,6 +7,7 @@ import typeorm from './orm.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TenancyModule } from './modules/tenancy/tenancy.module';
 import { UserModule } from './modules/public/user/user.module';
+import { AuthModule } from './modules/public/auth/auth.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserModule } from './modules/public/user/user.module';
     TenantsModule,
     TenancyModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
