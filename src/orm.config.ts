@@ -1,10 +1,12 @@
 import 'dotenv/config';
-import { SnakeNamingStrategy } from './snake-naming.strategy';
+import { registerAs } from '@nestjs/config';
+import { DataSource, DataSourceOptions } from 'typeorm';
 
+import { SnakeNamingStrategy } from './snake-naming.strategy';
 import { join } from 'path';
 const { HOST, PORT, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
 
-module.exports = {
+const config = {
   type: 'postgres',
   host: HOST,
   port: PORT,
@@ -17,3 +19,6 @@ module.exports = {
   entities: [join(__dirname, './modules/public/**/*.entity{.ts,.js}')],
   migrations: [join(__dirname, './migrations/public/*{.ts,.js}')],
 };
+
+export default registerAs('typeorm', () => config);
+export const connectionSource = new DataSource(config as DataSourceOptions);
