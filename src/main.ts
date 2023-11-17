@@ -2,24 +2,34 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { connectionSource } from './orm.config';
 import { getTenantConnection } from './modules/tenancy/tenancy.utils';
-
+import { tenancyMiddleware } from './modules/tenancy/tenancy.middleware';
+import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  await app.listen(3000, async () => {
-    await connectionSource.connect();
-    const schemas = await connectionSource.query('select schema_name as name from information_schema.schemata;');
-    console.log(schemas);
-    for (let i = 0; i < schemas.length; i += 1) {
-      const { name: schema } = schemas[i];
+  app.use(tenancyMiddleware);
 
-      if (schema.startsWith('tenant_')) {
-        const tenantId = schema.replace('tenant_', '');
-        const connection = await getTenantConnection(tenantId);
-        await connection.runMigrations();
-        await connection.close();
-      }
-    }
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
   });
+
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
+  await connectionSource.connect();
+  const schemas = await connectionSource.query('select schema_name as name from information_schema.schemata;');
+  console.log(schemas);
+
+  for (let i = 0; i < schemas.length; i += 1) {
+    const { name: schema } = schemas[i];
+    if (schema.startsWith('tenant_')) {
+      const tenantId = schema.replace('tenant_', '');
+      const connection = await getTenantConnection(tenantId);
+      await connection.runMigrations();
+      await connection.close();
+    }
+  }
+  await app.listen(3000, () => {});
 }
 bootstrap();
