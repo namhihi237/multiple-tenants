@@ -1,4 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { Tenant } from './tenant.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CreateTenantDto } from './tenant.dto';
+import { getTenantConnection } from '../../tenancy/tenancy.utils';
+import { connectionSource } from '../../../orm.config';
 
 @Injectable()
-export class TenantsService {}
+export class TenantsService {
+  constructor(
+    @InjectRepository(Tenant)
+    private readonly tenantsRepository: Repository<Tenant>,
+  ) {}
+
+  async create(createTenantDto: CreateTenantDto): Promise<Tenant> {
+    const newTenant = this.tenantsRepository.create(createTenantDto);
+    const tenant = await this.tenantsRepository.save(newTenant);
+    const schemaName = `tenant_${tenant.id}`;
+    await connectionSource.query(`CREATE SCHEMA IF NOT EXISTS "${schemaName}"`);
+
+    const connection = await getTenantConnection(`${tenant.id}`);
+    await connection.runMigrations();
+    await connection.close();
+
+    return tenant;
+  }
+}
