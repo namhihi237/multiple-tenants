@@ -58,7 +58,6 @@ export class AuthService {
 
   private async validateToken(req: Request) {
     const authorization = req.headers['authorization'];
-    const tenantId = req.headers['tenantId'];
     let userId = '';
     let token = '';
     if (authorization && authorization.startsWith('Bearer')) {
@@ -81,7 +80,6 @@ export class AuthService {
       if (!user) {
         throw new NotFoundException(AuthErrorMessage.AUTH_USER_NOT_EXIST);
       }
-      user['tenantId'] = tenantId;
       return user;
     }
     return null;

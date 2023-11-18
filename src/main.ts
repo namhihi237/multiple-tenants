@@ -6,12 +6,14 @@ import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptor/response.interceptor';
 import * as express from 'express';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { tenancyMiddleware } from './modules/tenancy/tenancy.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     rawBody: true,
   });
   app.useGlobalInterceptors(new TransformInterceptor());
+  app.use(tenancyMiddleware);
 
   app.enableCors({
     origin: true,
