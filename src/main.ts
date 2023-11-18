@@ -25,9 +25,9 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-  await connectionSource.connect();
+  (await connectionSource.connect()).runMigrations();
+
   const schemas = await connectionSource.query('select schema_name as name from information_schema.schemata;');
-  console.log(schemas);
 
   for (let i = 0; i < schemas.length; i += 1) {
     const { name: schema } = schemas[i];
@@ -40,4 +40,5 @@ async function bootstrap() {
   }
   await app.listen(3000, () => {});
 }
+
 bootstrap();

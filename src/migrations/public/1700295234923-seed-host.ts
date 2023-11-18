@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { hash } from 'bcrypt';
 
-export class SeedHost1700235234923 implements MigrationInterface {
-  name = 'SeedHost1700235234923';
+export class SeedHost1700295234923 implements MigrationInterface {
+  name = 'SeedHost1700295234923';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     const hashPassword = await hash(process.env.HOST_ACCOUNT_PASSWORD || 'admin123!@#', 10);
