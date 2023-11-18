@@ -6,6 +6,7 @@ import { CreateTenantDto } from './tenant.dto';
 import { getTenantConnection } from '../../tenancy/tenancy.utils';
 import { connectionSource } from '../../../orm.config';
 import { IResponse } from '../../../common/utils/response';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class TenantsService {
@@ -14,9 +15,11 @@ export class TenantsService {
     private readonly tenantsRepository: Repository<Tenant>,
   ) {}
 
-  async create(createTenantDto: CreateTenantDto): Promise<IResponse<Tenant>> {
+  async create(createTenantDto: CreateTenantDto, currentUser: User): Promise<IResponse<Tenant>> {
     const newTenant = this.tenantsRepository.create(createTenantDto);
+    newTenant.creatorUserId = currentUser.id;
     const tenant = await this.tenantsRepository.save(newTenant);
+
     const schemaName = `tenant_${tenant.id}`;
     await connectionSource.query(`CREATE SCHEMA IF NOT EXISTS "${schemaName}"`);
 
