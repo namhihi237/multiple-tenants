@@ -10,7 +10,7 @@ import { AuthErrorMessage } from '../../../common/constants/message';
 import { UserService } from '../user/user.service';
 import { InputSignInDto, SignInResponse } from './auth.dto';
 import { compareSync } from 'bcrypt';
-
+import { IResponse } from '../../../common/utils/response';
 @Injectable()
 export class AuthService {
   constructor(
@@ -18,7 +18,7 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
-  async login(input: InputSignInDto) {
+  async login(input: InputSignInDto): Promise<IResponse<any>> {
     const user = await this.userService.findOne('userName', input.userName);
     if (!user) {
       throw new BadRequestException(AuthErrorMessage.AUTH_INCORRECT_USER_NAME_OR_PASSWORD);
@@ -31,15 +31,19 @@ export class AuthService {
 
     const jwtToken = this.signToken(user.id);
     const response: SignInResponse = {
-      success: true,
       userInfo: {
-        id: user.id,
-        userName: user.userName,
-        tenantId: user.tenantId,
+        ...user,
+        password: undefined,
+        googleAuthenticatorKey: undefined,
+        emailConfirmationCode: undefined,
+        passwordResetCode: undefined,
+        signInToken: undefined,
       },
       token: jwtToken,
     };
-    return response;
+    return {
+      data: response,
+    };
   }
 
   async validate(context: ExecutionContext): Promise<boolean> {

@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { connectionSource } from './orm.config';
 import { getTenantConnection } from './modules/tenancy/tenancy.utils';
-import { LogLevel, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptor/response.interceptor';
 import * as express from 'express';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -10,7 +10,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     rawBody: true,
-    logger: 'log,debug'.split(', ') as LogLevel[],
   });
   app.useGlobalInterceptors(new TransformInterceptor());
 

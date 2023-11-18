@@ -1,4 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
+import { User } from '../user/user.entity';
 
 export class InputSignInDto {
   @IsNotEmpty()
@@ -8,8 +9,8 @@ export class InputSignInDto {
   password: string;
 }
 
-export interface SignInResponse {
-  success: boolean;
-  userInfo: any;
+export class SignInResponse {
+  userInfo: User;
+
   token: string;
 }
