@@ -43,22 +43,20 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## create migration
+## Create migration
 
 IMPORTANT: During create change migration, only one public or tenanted location is changed
 
 - public: `npm run migration:generate --name=public/<name>`
 - tenanted: `npm run migration:generate --name=tenanted/<name>`
 
-With the tenanted change after generate migration file, done run migration, It will create auto run when tenant created, And should update this file migration use schema
+With the tenanted change after generate migration file, DO NOT run migration, It will create auto run when tenant created or when restart app (after deploy), And should update this file migration use schema
 
 ```ts
 const { schema } = queryRunner.connection.options as PostgresConnectionOptions;
 
 // use schema
 ```
-
-When restart app => auto run migration for each tenant
 
 ## Test
 
