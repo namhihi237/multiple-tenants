@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserCreateDto } from './user.dto';
 import { hash } from 'bcrypt';
+import { IResponse } from '../../../common/utils/response';
 @Injectable()
 export class UserService {
   constructor(
@@ -11,7 +12,26 @@ export class UserService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  async findOne(key: string, value: string) {
+  async getUser(id: number): Promise<IResponse<User>> {
+    const user = await this.findOne('id', id);
+    return {
+      data: {
+        ...user,
+        password: undefined,
+        googleAuthenticatorKey: undefined,
+        emailConfirmationCode: undefined,
+        passwordResetCode: undefined,
+        signInToken: undefined,
+        tenant: {
+          ...user.tenant,
+          connectionString: undefined,
+          dbServer: undefined,
+        },
+      },
+    };
+  }
+
+  async findOne(key: string, value: string | number) {
     return this.usersRepository.findOne({
       where: {
         [key]: value,
