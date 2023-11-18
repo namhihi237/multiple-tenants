@@ -9,6 +9,7 @@ import { TenancyModule } from './modules/tenancy/tenancy.module';
 import { UserModule } from './modules/public/user/user.module';
 import { AuthModule } from './modules/public/auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TestModule } from './modules/tenanted/test/test.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     TenancyModule,
     UserModule,
     AuthModule,
+    TestModule,
   ],
   controllers: [AppController],
   providers: [
