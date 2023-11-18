@@ -13,7 +13,10 @@ export class TenantsController {
   constructor(private readonly tenantsService: TenantsService) {}
 
   @Post()
-  async create(@CurrentUser() user: User, @Body() createTenantDto: CreateTenantDto): Promise<IResponse<Tenant>> {
+  async create(
+    @CurrentUser() user: User,
+    @Body() createTenantDto: CreateTenantDto,
+  ): Promise<IResponse<Tenant & { user: User }>> {
     return this.tenantsService.create(createTenantDto, user);
   }
 }

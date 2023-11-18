@@ -30,6 +30,8 @@
 $ npm install
 ```
 
+Create `.env` file, copy key from `.env.example` into `.env` and update
+
 ## Running the app
 
 ```bash
@@ -47,8 +49,8 @@ $ npm run start:prod
 
 IMPORTANT: During create change migration, only one public or tenanted location is changed
 
-- public: `npm run migration:generate --name=public/<name>`
-- tenanted: `npm run migration:generate --name=tenanted/<name>`
+- public: `npm run migration:generate --name=<name>`
+- tenanted: `npm run migration:generate-tenant --name/<name>`
 
 With the tenanted change after generate migration file, DO NOT run migration, It will create auto run when tenant created or when restart app (after deploy), And should update this file migration use schema
 

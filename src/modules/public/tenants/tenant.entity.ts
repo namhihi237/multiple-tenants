@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, JoinColumn } from 'typeorm';
 import { AbstractEntity } from '../../../abstract.entity';
 import { User } from '../user/user.entity';
 @Entity({ name: 'tenants', schema: 'public' })
@@ -45,7 +45,7 @@ export class Tenant extends AbstractEntity {
   @Column({ nullable: true })
   tenantDatabaseId: number;
 
-  @OneToOne(() => User, user => user.tenant)
+  @ManyToOne(() => User, user => user.tenants)
   @JoinColumn({ name: 'creator_user_id' })
   user: User;
 }

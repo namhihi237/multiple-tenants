@@ -1,4 +1,6 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, ValidateNested } from 'class-validator';
+import { UserCreateDto } from '../user/user.dto';
+import { Type } from 'class-transformer';
 
 export class CreateTenantDto {
   @IsNotEmpty()
@@ -6,4 +8,8 @@ export class CreateTenantDto {
 
   @IsNotEmpty()
   tenancyName: string;
+
+  @ValidateNested()
+  @Type(() => UserCreateDto)
+  user: UserCreateDto;
 }
