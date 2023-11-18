@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { AbstractEntity } from '../../../abstract.entity';
 import { User } from '../user/user.entity';
+import { DbServer } from '../db-server/db-server.entity';
 @Entity({ name: 'tenants', schema: 'public' })
 export class Tenant extends AbstractEntity {
   @Column({ nullable: true })
@@ -48,4 +49,8 @@ export class Tenant extends AbstractEntity {
   @ManyToOne(() => User, user => user.tenants)
   @JoinColumn({ name: 'creator_user_id' })
   user: User;
+
+  @OneToOne(() => DbServer, { eager: true, cascade: true })
+  @JoinColumn({ name: 'tenantDatabaseId', referencedColumnName: 'id' })
+  dbServer: DbServer;
 }

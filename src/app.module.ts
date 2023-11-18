@@ -10,6 +10,7 @@ import { UserModule } from './modules/public/user/user.module';
 import { AuthModule } from './modules/public/auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TestModule } from './modules/tenanted/test/test.module';
+import { DbServerModule } from './modules/public/db-server/db-server.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TestModule } from './modules/tenanted/test/test.module';
     UserModule,
     AuthModule,
     TestModule,
+    DbServerModule,
   ],
   controllers: [AppController],
   providers: [

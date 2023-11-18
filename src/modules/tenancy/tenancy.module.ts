@@ -8,9 +8,9 @@ const connectionFactory = {
   provide: CONNECTION,
   scope: Scope.REQUEST,
   useFactory: (request: ExpressRequest) => {
-    const { tenantId } = request;
-    if (tenantId) {
-      return getTenantConnection(tenantId);
+    const { dedicated, serverName, tenantName } = request;
+    if (dedicated || serverName || tenantName) {
+      return getTenantConnection(''); //TODO
     }
 
     return null;

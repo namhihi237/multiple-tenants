@@ -1,6 +1,7 @@
 import { IsNotEmpty, ValidateNested } from 'class-validator';
 import { UserCreateDto } from '../user/user.dto';
 import { Type } from 'class-transformer';
+import { CreateDbDto } from '../db-server/db-server.dto';
 
 export class CreateTenantDto {
   @IsNotEmpty()
@@ -10,10 +11,12 @@ export class CreateTenantDto {
   tenancyName: string;
 
   @IsNotEmpty()
-  connectionString: string;
-
-  @IsNotEmpty()
   @ValidateNested()
   @Type(() => UserCreateDto)
   user: UserCreateDto;
+
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => CreateDbDto)
+  dbServer: CreateDbDto;
 }

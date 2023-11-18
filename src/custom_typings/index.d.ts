@@ -1,5 +1,7 @@
 declare namespace Express {
   interface Request {
-    tenantId?: string;
+    tenantName?: string;
+    dedicated?: string;
+    serverName?: string;
   }
 }

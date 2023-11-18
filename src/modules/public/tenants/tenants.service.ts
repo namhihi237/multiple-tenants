@@ -4,10 +4,10 @@ import { Tenant } from './tenant.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTenantDto } from './tenant.dto';
 import { getTenantConnection } from '../../tenancy/tenancy.utils';
-import { connectionSource } from '../../../orm.config';
 import { IResponse } from '../../../common/utils/response';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
+import { DbServerService } from '../db-server/db-server.service';
 
 @Injectable()
 export class TenantsService {
@@ -15,6 +15,7 @@ export class TenantsService {
     @InjectRepository(Tenant)
     private readonly tenantsRepository: Repository<Tenant>,
     private readonly userService: UserService,
+    private readonly dbsService: DbServerService,
   ) {}
 
   async create(createTenantDto: CreateTenantDto, currentUser: User): Promise<IResponse<Tenant & { user: User }>> {
@@ -23,10 +24,15 @@ export class TenantsService {
       throw new BadRequestException('user.userName already exist');
     }
 
+    const dbServer = await this.dbsService.createDb(createTenantDto.dbServer);
+
+    const connectionString = `postgres://${dbServer.user}:${dbServer.password}@${dbServer.host}:${dbServer.port}/${dbServer.dbName}`;
+
     const newTenant = this.tenantsRepository.create({
       name: createTenantDto.name,
       tenancyName: createTenantDto.tenancyName,
-      connectionString: createTenantDto.connectionString,
+      connectionString,
+      tenantDatabaseId: dbServer.id,
     });
     newTenant.creatorUserId = currentUser.id;
 
@@ -41,10 +47,7 @@ export class TenantsService {
       signInToken: undefined,
     };
 
-    const schemaName = `tenant_${tenant.id}`;
-    await connectionSource.query(`CREATE SCHEMA IF NOT EXISTS "${schemaName}"`);
-
-    const connection = await getTenantConnection(`${tenant.id}`);
+    const connection = await getTenantConnection(connectionString);
     await connection.runMigrations();
     await connection.close();
 
