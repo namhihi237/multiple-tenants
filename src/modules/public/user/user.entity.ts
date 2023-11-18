@@ -16,7 +16,7 @@ export class User extends AbstractEntity {
   @Column({ default: false })
   isDeleted: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   deleteUserId: number;
 
   @Column({ nullable: true })
