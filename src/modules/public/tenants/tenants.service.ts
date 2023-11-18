@@ -26,8 +26,8 @@ export class TenantsService {
     const newTenant = this.tenantsRepository.create({
       name: createTenantDto.name,
       tenancyName: createTenantDto.tenancyName,
+      connectionString: createTenantDto.connectionString,
     });
-
     newTenant.creatorUserId = currentUser.id;
 
     const tenant = await this.tenantsRepository.save(newTenant);

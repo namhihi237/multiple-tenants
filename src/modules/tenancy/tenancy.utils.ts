@@ -1,22 +1,25 @@
-import { Connection, createConnection, getConnectionManager } from 'typeorm';
+import { createConnection, getConnectionManager } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
-import * as tenantsOrmconfig from '../../tenants-orm.config';
+import { tenantsOrmconfig } from '../../tenants-orm.config';
 
-export function getTenantConnection(tenantId: string): Promise<Connection> {
-  if (!tenantId) {
-    return null;
+export function getTenantConnection(connectionString: string): Promise<any> {
+  if (!connectionString) {
+    return Promise.reject(new Error('Connection string is required.'));
   }
-  const connectionName = `tenant_${tenantId}`;
+
   const connectionManager = getConnectionManager();
+  const connectionName = `tenant_${connectionString}`;
 
   if (connectionManager.has(connectionName)) {
     const connection = connectionManager.get(connectionName);
     return Promise.resolve(connection.isConnected ? connection : connection.connect());
   }
 
+  const ormConfig = tenantsOrmconfig(connectionString);
+
   return createConnection({
-    ...(tenantsOrmconfig as PostgresConnectionOptions),
+    ...(ormConfig as PostgresConnectionOptions),
     name: connectionName,
-    schema: connectionName,
+    schema: 'public',
   });
 }

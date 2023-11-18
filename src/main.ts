@@ -27,15 +27,22 @@ async function bootstrap() {
 
   (await connectionSource.connect()).runMigrations();
 
-  const schemas = await connectionSource.query('select schema_name as name from information_schema.schemata;');
+  const tenants = await connectionSource.query('SELECT connection_string FROM tenants;');
+  console.log(tenants);
 
-  for (let i = 0; i < schemas.length; i += 1) {
-    const { name: schema } = schemas[i];
-    if (schema.startsWith('tenant_')) {
-      const tenantId = schema.replace('tenant_', '');
-      const connection = await getTenantConnection(tenantId);
-      await connection.runMigrations();
-      await connection.close();
+  for (let i = 0; i < tenants.length; i += 1) {
+    const { connection_string } = tenants[i];
+    console.log('RUN:', connection_string);
+
+    if (connection_string) {
+      try {
+        const connection = await getTenantConnection(connection_string);
+
+        await connection.runMigrations();
+        await connection.close();
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
   await app.listen(3000, () => {});
