@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../../abstract.entity';
 import { Tenant } from '../tenants/tenant.entity';
 
@@ -100,9 +100,9 @@ export class User extends AbstractEntity {
   @Column({ default: true })
   acceptReviewPromotionEmail: boolean;
 
-  @OneToMany(() => Tenant, tenant => tenant.user)
+  @ManyToOne(() => Tenant, tenant => tenant.user)
   @JoinColumn({ name: 'tenant_id' })
-  tenants: Tenant[];
+  tenant: Tenant;
 
   @OneToMany(() => User, user => user.creatorUser, { nullable: true })
   @JoinColumn({ name: 'creator_user_id' })

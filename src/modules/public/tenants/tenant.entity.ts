@@ -46,7 +46,7 @@ export class Tenant extends AbstractEntity {
   @Column({ nullable: true })
   tenantDatabaseId: number;
 
-  @ManyToOne(() => User, user => user.tenants)
+  @ManyToOne(() => User, user => user.tenant)
   @JoinColumn({ name: 'creator_user_id' })
   user: User;
 

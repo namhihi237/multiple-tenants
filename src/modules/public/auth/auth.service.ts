@@ -38,6 +38,11 @@ export class AuthService {
         emailConfirmationCode: undefined,
         passwordResetCode: undefined,
         signInToken: undefined,
+        tenant: {
+          ...user.tenant,
+          connectionString: undefined,
+          dbServer: undefined,
+        },
       },
       token: jwtToken,
     };
