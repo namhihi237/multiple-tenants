@@ -25,9 +25,12 @@ export class SeedHost1700235234923 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`
+    await queryRunner.query(
+      `
     DELETE FROM "users"
-    WHERE username = 'host'
-  `);
+    WHERE username = $1
+  `,
+      [process.env.HOST_USERNAME],
+    );
   }
 }
