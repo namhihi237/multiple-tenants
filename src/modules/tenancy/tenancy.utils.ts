@@ -3,6 +3,9 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 import * as tenantsOrmconfig from '../../tenants-orm.config';
 
 export function getTenantConnection(tenantId: string): Promise<Connection> {
+  if (!tenantId) {
+    return null;
+  }
   const connectionName = `tenant_${tenantId}`;
   const connectionManager = getConnectionManager();
 

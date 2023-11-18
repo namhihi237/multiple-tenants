@@ -1,9 +1,11 @@
-import { Controller, Body, Post } from '@nestjs/common';
+import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { TestService } from './test.service';
 import { CreateTestDto } from './test.dto';
 import { Test } from './test.entity';
+import { AuthGuard } from '../../public/auth/auth.guard';
 
-@Controller('/api/tests')
+@UseGuards(AuthGuard)
+@Controller('/api/tenanted/test')
 export class TestController {
   constructor(private readonly testService: TestService) {}
 

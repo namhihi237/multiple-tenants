@@ -9,6 +9,7 @@ export class CreateTenantDto {
   @IsNotEmpty()
   tenancyName: string;
 
+  @IsNotEmpty()
   @ValidateNested()
   @Type(() => UserCreateDto)
   user: UserCreateDto;
