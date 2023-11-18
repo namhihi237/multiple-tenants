@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTenantDto } from './tenant.dto';
 import { getTenantConnection } from '../../tenancy/tenancy.utils';
 import { connectionSource } from '../../../orm.config';
+import { IResponse } from '../../../common/utils/response';
 
 @Injectable()
 export class TenantsService {
@@ -13,7 +14,7 @@ export class TenantsService {
     private readonly tenantsRepository: Repository<Tenant>,
   ) {}
 
-  async create(createTenantDto: CreateTenantDto): Promise<Tenant> {
+  async create(createTenantDto: CreateTenantDto): Promise<IResponse<Tenant>> {
     const newTenant = this.tenantsRepository.create(createTenantDto);
     const tenant = await this.tenantsRepository.save(newTenant);
     const schemaName = `tenant_${tenant.id}`;
@@ -23,6 +24,8 @@ export class TenantsService {
     await connection.runMigrations();
     await connection.close();
 
-    return tenant;
+    return {
+      data: tenant,
+    };
   }
 }

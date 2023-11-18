@@ -6,7 +6,6 @@ export interface Response<T> {
   statusCode: number;
   message?: string;
   data?: T;
-  success?: boolean;
 }
 
 @Injectable()
@@ -15,9 +14,8 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
     return next.handle().pipe(
       map(data => ({
         statusCode: context.switchToHttp().getResponse().statusCode,
-        success: data && data.success ? data.success : undefined,
-        data: data && data.data ? data.data : undefined,
-        message: data && data.message ? data.message : undefined,
+        data: data && data.data ? data.data : null,
+        message: data && data.message ? data.message : null,
       })),
     );
   }

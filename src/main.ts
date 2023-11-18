@@ -2,15 +2,17 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { connectionSource } from './orm.config';
 import { getTenantConnection } from './modules/tenancy/tenancy.utils';
-import { tenancyMiddleware } from './modules/tenancy/tenancy.middleware';
-import { ValidationPipe } from '@nestjs/common';
+import { LogLevel, ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptor/response.interceptor';
 import * as express from 'express';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-  app.use(tenancyMiddleware);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    rawBody: true,
+    logger: 'log,debug'.split(', ') as LogLevel[],
+  });
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   app.enableCors({
     origin: true,
@@ -21,7 +23,6 @@ async function bootstrap() {
   app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  app.useGlobalInterceptors(new TransformInterceptor());
 
   await connectionSource.connect();
   const schemas = await connectionSource.query('select schema_name as name from information_schema.schemata;');
