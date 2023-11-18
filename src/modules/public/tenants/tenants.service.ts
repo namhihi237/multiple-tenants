@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Tenant } from './tenant.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,6 +18,11 @@ export class TenantsService {
   ) {}
 
   async create(createTenantDto: CreateTenantDto, currentUser: User): Promise<IResponse<Tenant & { user: User }>> {
+    const userExist = await this.userService.findOne('userName', createTenantDto.user.userName);
+    if (userExist) {
+      throw new BadRequestException('user.userName already exist');
+    }
+
     const newTenant = this.tenantsRepository.create({
       name: createTenantDto.name,
       tenancyName: createTenantDto.tenancyName,
@@ -26,7 +31,7 @@ export class TenantsService {
     newTenant.creatorUserId = currentUser.id;
 
     const tenant = await this.tenantsRepository.save(newTenant);
-    const userTenant = await this.userService.create(createTenantDto.user);
+    const userTenant = await this.userService.create({ ...createTenantDto.user, tenantId: tenant.id });
     tenant.user = {
       ...userTenant,
       password: undefined,

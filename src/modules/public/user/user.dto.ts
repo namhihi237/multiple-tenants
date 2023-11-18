@@ -21,4 +21,6 @@ export class UserCreateDto {
 
   @IsNotEmpty()
   normalizeEmail: string;
+
+  tenantId: number;
 }

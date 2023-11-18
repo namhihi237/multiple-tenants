@@ -29,7 +29,7 @@ export class AuthService {
       throw new UnauthorizedException(AuthErrorMessage.AUTH_INCORRECT_USER_NAME_OR_PASSWORD);
     }
 
-    const jwtToken = this.signToken(user.id);
+    const jwtToken = this.signToken({ userId: user.id, tenantId: user.tenantId });
     const response: SignInResponse = {
       userInfo: {
         ...user,
@@ -85,10 +85,11 @@ export class AuthService {
     return null;
   }
 
-  private signToken(userId: number): string {
+  private signToken({ userId, tenantId }: { userId: number; tenantId?: number }): string {
     return this.jwtService.sign(
       {
         userId: userId,
+        tenantId,
       },
       {
         secret: process.env.JWT_SECRET,
