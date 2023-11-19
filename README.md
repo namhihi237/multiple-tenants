@@ -54,12 +54,6 @@ IMPORTANT: During create change migration, only one public or tenanted location 
 
 With the tenanted change after generate migration file, DO NOT run migration, It will create auto run when tenant created or when restart app (after deploy), And should update this file migration use schema
 
-```ts
-const { schema } = queryRunner.connection.options as PostgresConnectionOptions;
-
-// use schema
-```
-
 ## Test
 
 ```bash
