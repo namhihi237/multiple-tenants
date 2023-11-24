@@ -1,9 +1,9 @@
 import { DataSource } from 'typeorm';
 import { Role } from '../modules/public/user/entity/role.entity';
-import { RoleEnum } from '../common/enums/role.enum';
-import { User } from '../modules/public/user/entity/user.entity';
+import { RoleEnum } from '../enums/role.enum';
+import { User } from '../modules/public/role/user.entity';
 import { hash } from 'bcrypt';
-import { UserRole } from '../modules/public/user/entity/user-role.entity';
+import { UserRole } from '../modules/public/user-role/user-role.entity';
 
 export const seederAdmin = async (connectionSource: DataSource): Promise<void> => {
   try {

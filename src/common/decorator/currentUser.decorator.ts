@@ -1,5 +1,5 @@
 import { createParamDecorator } from '@nestjs/common';
-import { User } from '../../modules/public/user/entity/user.entity';
+import { User } from '../../modules/public/role/user.entity';
 
 export const CurrentUser = createParamDecorator((_, context): User => {
   const req = context.switchToHttp().getRequest();

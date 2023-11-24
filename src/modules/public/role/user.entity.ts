@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { AbstractEntity } from '../../../../abstract.entity';
-import { Tenant } from '../../tenants/tenant.entity';
-import { UserRole } from './user-role.entity';
+import { AbstractEntity } from '../../../abstract.entity';
+import { Tenant } from '../tenants/tenant.entity';
+import { UserRole } from '../user-role/user-role.entity';
 
 @Entity({ name: 'users', schema: 'public' })
 export class User extends AbstractEntity {

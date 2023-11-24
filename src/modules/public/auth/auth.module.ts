@@ -5,10 +5,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
 import { UserService } from '../user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../user/entity/user.entity';
+import { User } from '../role/user.entity';
+import { UserRoleModule } from '../user-role/user-role.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), forwardRef(() => UserModule), JwtModule],
+  imports: [TypeOrmModule.forFeature([User]), forwardRef(() => UserModule), JwtModule, UserRoleModule],
   controllers: [AuthController],
   exports: [AuthService],
   providers: [AuthService, UserService],

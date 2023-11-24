@@ -5,9 +5,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTenantDto } from './tenant.dto';
 import { getTenantConnection } from '../../tenancy/tenancy.utils';
 import { IResponse } from '../../../common/utils/response';
-import { User } from '../user/entity/user.entity';
+import { User } from '../role/user.entity';
 import { UserService } from '../user/user.service';
 import { DbServerService } from '../db-server/db-server.service';
+import { RoleEnum } from '../../../enums/role.enum';
 
 @Injectable()
 export class TenantsService {
@@ -37,7 +38,7 @@ export class TenantsService {
     newTenant.creatorUserId = currentUser.id;
 
     const tenant = await this.tenantsRepository.save(newTenant);
-    const userTenant = await this.userService.create({ ...createTenantDto.user, tenantId: tenant.id });
+    const userTenant = await this.userService.create({ ...createTenantDto.user, tenantId: tenant.id }, RoleEnum.Tenant);
     tenant.user = {
       ...userTenant,
       password: undefined,

@@ -11,6 +11,8 @@ import { AuthModule } from './modules/public/auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TestModule } from './modules/tenanted/test/test.module';
 import { DbServerModule } from './modules/public/db-server/db-server.module';
+import { UserRoleModule } from './modules/public/user-role/user-role.module';
+import { RoleModule } from './modules/public/role/role.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { DbServerModule } from './modules/public/db-server/db-server.module';
     AuthModule,
     TestModule,
     DbServerModule,
+    UserRoleModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { User } from '../user/entity/user.entity';
+import { User } from '../role/user.entity';
 
 export class InputSignInDto {
   @IsNotEmpty()
