@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRole } from './user-role.entity';
 import { RoleModule } from '../role/role.module';
 import { RoleService } from '../role/role.service';
-import { Role } from '../user/entity/role.entity';
+import { Role } from '../user/role.entity';
 
 @Module({
   providers: [UserRoleService, RoleService],

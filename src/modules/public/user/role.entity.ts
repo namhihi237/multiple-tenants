@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany } from 'typeorm';
-import { AbstractEntity } from '../../../../abstract.entity';
-import { UserRole } from '../../user-role/user-role.entity';
+import { AbstractEntity } from '../../../abstract.entity';
+import { UserRole } from '../user-role/user-role.entity';
 
 @Entity({ name: 'roles', schema: 'public' })
 export class Role extends AbstractEntity {
