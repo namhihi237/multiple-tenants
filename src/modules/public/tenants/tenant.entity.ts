@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { AbstractEntity } from '../../../abstract.entity';
-import { User } from '../user/user.entity';
+import { User } from '../user/entity/user.entity';
 import { DbServer } from '../db-server/db-server.entity';
 @Entity({ name: 'tenants', schema: 'public' })
 export class Tenant extends AbstractEntity {

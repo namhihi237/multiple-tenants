@@ -1,8 +1,8 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../../../guards/auth.guard';
 import { CurrentUser } from '../../../common/decorator/currentUser.decorator';
-import { User } from './user.entity';
+import { User } from './entity/user.entity';
 
 @UseGuards(AuthGuard)
 @Controller('/api/users')

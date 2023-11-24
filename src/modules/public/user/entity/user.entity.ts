@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { AbstractEntity } from '../../../abstract.entity';
-import { Tenant } from '../tenants/tenant.entity';
+import { AbstractEntity } from '../../../../abstract.entity';
+import { Tenant } from '../../tenants/tenant.entity';
+import { UserRole } from './user-role.entity';
 
 @Entity({ name: 'users', schema: 'public' })
 export class User extends AbstractEntity {
@@ -107,4 +108,7 @@ export class User extends AbstractEntity {
   @OneToMany(() => User, user => user.creatorUser, { nullable: true })
   @JoinColumn({ name: 'creator_user_id' })
   creatorUser: User;
+
+  @OneToMany(() => UserRole, userRole => userRole.user)
+  userRoles: UserRole[];
 }

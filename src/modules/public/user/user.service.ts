@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './user.entity';
+import { User } from './entity/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserCreateDto } from './user.dto';
@@ -38,6 +38,9 @@ export class UserService {
       },
       relations: {
         tenant: true,
+        userRoles: {
+          role: true,
+        },
       },
     });
   }

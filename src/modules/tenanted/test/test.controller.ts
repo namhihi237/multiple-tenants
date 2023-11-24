@@ -2,7 +2,7 @@ import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { TestService } from './test.service';
 import { CreateTestDto } from './test.dto';
 import { Test } from './test.entity';
-import { AuthGuard } from '../../public/auth/auth.guard';
+import { AuthGuard } from '../../../guards/auth.guard';
 
 @UseGuards(AuthGuard)
 @Controller('/api/tenanted/test')

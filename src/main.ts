@@ -7,6 +7,7 @@ import { TransformInterceptor } from './common/interceptor/response.interceptor'
 import * as express from 'express';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { tenancyMiddleware } from './modules/tenancy/tenancy.middleware';
+import { seederRun } from './seeder';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -25,26 +26,27 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-  (await connectionSource.connect()).runMigrations();
+  (await connectionSource.connect()).runMigrations().then(async () => {
+    await seederRun(connectionSource);
+    const tenants = await connectionSource.query('SELECT connection_string FROM tenants;');
 
-  const tenants = await connectionSource.query('SELECT connection_string FROM tenants;');
-  console.log(tenants);
+    for (let i = 0; i < tenants.length; i += 1) {
+      const { connection_string } = tenants[i];
+      console.log('RUN:', connection_string);
 
-  for (let i = 0; i < tenants.length; i += 1) {
-    const { connection_string } = tenants[i];
-    console.log('RUN:', connection_string);
+      if (connection_string) {
+        try {
+          const connection = await getTenantConnection(connection_string);
 
-    if (connection_string) {
-      try {
-        const connection = await getTenantConnection(connection_string);
-
-        await connection.runMigrations();
-        await connection.close();
-      } catch (error) {
-        console.log(error);
+          await connection.runMigrations();
+          await connection.close();
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
-  }
+  });
+
   await app.listen(3000, () => {});
 }
 

@@ -6,11 +6,6 @@ import { SnakeNamingStrategy } from './snake-naming.strategy';
 import { join } from 'path';
 const { HOST, PORT, DB_NAME, DB_USERNAME, DB_PASSWORD } = process.env;
 
-let entities = [join(__dirname, './modules/public/**/*.entity{.ts,.js}')];
-if (process.env.MIGRATION_TENANT) {
-  entities = [join(__dirname, './modules/tenanted/**/*.entity{.ts,.js}')];
-}
-
 export const config = {
   type: 'postgres',
   host: HOST,
@@ -21,7 +16,10 @@ export const config = {
   namingStrategy: new SnakeNamingStrategy(),
   logging: true,
   autoLoadEntities: true,
-  entities,
+  entities: [
+    join(__dirname, './modules/public/**/*.entity{.ts,.js}'),
+    join(__dirname, './modules/public/**/*/*.entity{.ts,.js}'),
+  ],
   migrations: [join(__dirname, './migrations/public/*{.ts,.js}')],
 };
 

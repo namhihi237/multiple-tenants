@@ -6,7 +6,7 @@ import { Tenant } from './tenant.entity';
 import { AuthModule } from '../auth/auth.module';
 import { UserService } from '../user/user.service';
 import { UserModule } from '../user/user.module';
-import { User } from '../user/user.entity';
+import { User } from '../user/entity/user.entity';
 import { DbServerService } from '../db-server/db-server.service';
 import { DbServerModule } from '../db-server/db-server.module';
 import { DbServer } from '../db-server/db-server.entity';
