@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { Role } from '../modules/public/user/role.entity';
+import { Role } from '../modules/public/role/role.entity';
 import { RoleEnum } from '../enums/role.enum';
 
 export const seederRoles = async (connectionSource: DataSource): Promise<void> => {

@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
-import { Role } from '../modules/public/user/role.entity';
+import { Role } from '../modules/public/role/role.entity';
 import { RoleEnum } from '../enums/role.enum';
-import { User } from '../modules/public/role/user.entity';
+import { User } from '../modules/public/user/user.entity';
 import { hash } from 'bcrypt';
 import { UserRole } from '../modules/public/user-role/user-role.entity';
 

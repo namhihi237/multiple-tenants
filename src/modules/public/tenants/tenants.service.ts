@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTenantDto } from './tenant.dto';
 import { getTenantConnection } from '../../tenancy/tenancy.utils';
 import { IResponse } from '../../../common/utils/response';
-import { User } from '../role/user.entity';
+import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { DbServerService } from '../db-server/db-server.service';
 import { RoleEnum } from '../../../enums/role.enum';

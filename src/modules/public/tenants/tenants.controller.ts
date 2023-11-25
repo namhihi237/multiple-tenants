@@ -4,7 +4,7 @@ import { CreateTenantDto } from './tenant.dto';
 import { IResponse } from '../../../common/utils/response';
 import { Tenant } from './tenant.entity';
 import { AuthGuard } from '../../../guards/auth.guard';
-import { User } from '../role/user.entity';
+import { User } from '../user/user.entity';
 import { CurrentUser } from '../../../common/decorator/currentUser.decorator';
 import { Roles } from '../../../common/decorator/roles.decorator';
 import { RoleEnum } from '../../../enums/role.enum';
