@@ -22,8 +22,8 @@ export function tenantsOrmconfig(connectionString: string) {
 
   return {
     ...config,
-    entities: [join(__dirname, './modules/tenanted/**/*.entity{.ts,.js}')],
-    migrations: [join(__dirname, './migrations/tenanted/*{.ts,.js}')],
+    entities: [join(__dirname, './modules/public/**/*.entity{.ts,.js}')],
+    migrations: [join(__dirname, './migrations/public/*{.ts,.js}')],
   };
 }
 
