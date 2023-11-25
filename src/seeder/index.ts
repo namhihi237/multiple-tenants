@@ -1,5 +1,7 @@
-import { seederAdmin } from './permission.seeder';
+import { seederHost } from './host.seeder';
+import { seederRoles } from './permission.seeder';
 
 export const seederRun = async connectionSource => {
-  await seederAdmin(connectionSource);
+  await seederRoles(connectionSource);
+  await seederHost(connectionSource);
 };

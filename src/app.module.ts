@@ -12,6 +12,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DbServerModule } from './modules/public/db-server/db-server.module';
 import { UserRoleModule } from './modules/public/user-role/user-role.module';
 import { RoleModule } from './modules/public/role/role.module';
+import { PermissionModule } from './modules/public/permission/permission.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { RoleModule } from './modules/public/role/role.module';
     DbServerModule,
     UserRoleModule,
     RoleModule,
+    PermissionModule,
   ],
   controllers: [AppController],
   providers: [
