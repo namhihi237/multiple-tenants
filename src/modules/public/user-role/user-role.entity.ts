@@ -12,7 +12,7 @@ export class UserRole extends AbstractEntity {
   @Column()
   userId: number;
 
-  @Column()
+  @Column({ nullable: true })
   permission_id: number;
 
   @ManyToOne(() => Role, role => role.userRoles)

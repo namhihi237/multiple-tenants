@@ -14,7 +14,7 @@ export const config = {
   password: DB_PASSWORD,
   database: DB_NAME,
   namingStrategy: new SnakeNamingStrategy(),
-  logging: true,
+  logging: false,
   autoLoadEntities: true,
   entities: [join(__dirname, './modules/public/**/*.entity{.ts,.js}')],
   migrations: [join(__dirname, './migrations/public/*{.ts,.js}')],

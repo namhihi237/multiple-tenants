@@ -3,6 +3,7 @@ import { Role } from '../modules/public/role/role.entity';
 import { RoleEnum } from '../enums/role.enum';
 import { User } from '../modules/public/user/user.entity';
 import { hash } from 'bcrypt';
+import { UserRole } from '../modules/public/user-role/user-role.entity';
 
 export const seederHost = async (connectionSource: DataSource): Promise<void> => {
   try {
@@ -29,7 +30,11 @@ export const seederHost = async (connectionSource: DataSource): Promise<void> =>
         name: 'host user',
       });
 
-      await connectionSource.getRepository(User).save(newAdmin);
+      const createdHost = await connectionSource.getRepository(User).save(newAdmin);
+
+      const newUserRule = connectionSource.getRepository(UserRole).create({ userId: createdHost.id, roleId: host.id });
+
+      connectionSource.getRepository(UserRole).save(newUserRule);
     }
 
     console.log('DONE SEED create host');

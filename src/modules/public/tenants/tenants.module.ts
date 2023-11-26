@@ -11,9 +11,17 @@ import { DbServerService } from '../db-server/db-server.service';
 import { DbServerModule } from '../db-server/db-server.module';
 import { DbServer } from '../db-server/db-server.entity';
 import { UserRoleModule } from '../user-role/user-role.module';
+import { PermissionModule } from '../permission/permission.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tenant, User, DbServer]), AuthModule, UserModule, DbServerModule, UserRoleModule],
+  imports: [
+    TypeOrmModule.forFeature([Tenant, User, DbServer]),
+    AuthModule,
+    UserModule,
+    DbServerModule,
+    UserRoleModule,
+    PermissionModule,
+  ],
   providers: [TenantsService, UserService, DbServerService],
   controllers: [TenantsController],
 })

@@ -7,9 +7,16 @@ import { UserService } from '../user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user/user.entity';
 import { UserRoleModule } from '../user-role/user-role.module';
+import { PermissionModule } from '../permission/permission.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), forwardRef(() => UserModule), JwtModule, UserRoleModule],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    forwardRef(() => UserModule),
+    JwtModule,
+    UserRoleModule,
+    PermissionModule,
+  ],
   controllers: [AuthController],
   exports: [AuthService],
   providers: [AuthService, UserService],
