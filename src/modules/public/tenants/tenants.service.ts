@@ -9,6 +9,7 @@ import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { DbServerService } from '../db-server/db-server.service';
 import { RoleEnum } from '../../../enums/role.enum';
+import { seederRoles } from '../../../seeder/permission.seeder';
 
 @Injectable()
 export class TenantsService {
@@ -29,6 +30,16 @@ export class TenantsService {
 
     const connectionString = `postgres://${dbServer.user}:${dbServer.password}@${dbServer.host}:${dbServer.port}/${dbServer.dbName}`;
 
+    const dbExist = await this.tenantsRepository.findOne({ where: { connectionString } });
+    if (dbExist) {
+      throw new BadRequestException('user.dbServer already exist');
+    }
+
+    const connection = await getTenantConnection(connectionString);
+    await connection.runMigrations();
+    await seederRoles(connection);
+    await connection.close();
+
     const newTenant = this.tenantsRepository.create({
       name: createTenantDto.name,
       tenancyName: createTenantDto.tenancyName,
@@ -47,10 +58,6 @@ export class TenantsService {
       passwordResetCode: undefined,
       signInToken: undefined,
     };
-
-    const connection = await getTenantConnection(connectionString);
-    await connection.runMigrations();
-    await connection.close();
 
     return {
       data: tenant,

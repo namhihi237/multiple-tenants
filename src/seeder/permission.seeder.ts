@@ -21,7 +21,7 @@ export const seederRoles = async (connectionSource: DataSource): Promise<void> =
       const newTenant = connectionSource.getRepository(Role).create({ name: RoleEnum.Tenant });
       const tenantRole = await connectionSource.getRepository(Role).save(newTenant);
       const tenantPermissions = [{ displayName: 'Get User', name: PermissionEnum.GET_USER, roleId: tenantRole.id }];
-      connectionSource.getRepository(Permission).insert(tenantPermissions);
+      await connectionSource.getRepository(Permission).insert(tenantPermissions);
     }
 
     console.log('DONE SEED seederRoles');
