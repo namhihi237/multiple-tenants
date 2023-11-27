@@ -9,6 +9,9 @@ export class Permission extends AbstractEntity {
   name: string;
 
   @Column()
+  displayName: string;
+
+  @Column()
   roleId: number;
 
   @ManyToOne(() => Role, role => role.permissions)

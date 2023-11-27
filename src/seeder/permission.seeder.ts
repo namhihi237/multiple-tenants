@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { Role } from '../modules/public/role/role.entity';
 import { RoleEnum } from '../enums/role.enum';
 import { Permission } from '../modules/public/permission/permission.entity';
+import { PermissionEnum } from '../enums/permission.enum';
 
 export const seederRoles = async (connectionSource: DataSource): Promise<void> => {
   try {
@@ -19,7 +20,7 @@ export const seederRoles = async (connectionSource: DataSource): Promise<void> =
     if (!tenant) {
       const newTenant = connectionSource.getRepository(Role).create({ name: RoleEnum.Tenant });
       const tenantRole = await connectionSource.getRepository(Role).save(newTenant);
-      const tenantPermissions = [{ name: 'get tenant', roleId: tenantRole.id }];
+      const tenantPermissions = [{ displayName: 'Get User', name: PermissionEnum.GET_USER, roleId: tenantRole.id }];
       connectionSource.getRepository(Permission).insert(tenantPermissions);
     }
 

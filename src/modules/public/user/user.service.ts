@@ -43,6 +43,7 @@ export class UserService {
         tenant: true,
         userRoles: {
           role: true,
+          permission: true,
         },
       },
     });

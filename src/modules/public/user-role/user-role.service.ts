@@ -17,8 +17,8 @@ export class UserRoleService {
 
   async create(userId: number, roleName: RoleEnum) {
     const role = await this.roleService.findByName(roleName);
-    const rolePermissions = this.permissionService.getPermissionsByRole([role.id]);
-    const useRoles = (await rolePermissions).map(rolePermission => {
+    const rolePermissions = await this.permissionService.getPermissionsByRole([role.id]);
+    const useRoles = rolePermissions.map(rolePermission => {
       return { userId, roleId: role.id, permissionId: rolePermission.id };
     });
     this.userRoleRepository.insert(useRoles);
