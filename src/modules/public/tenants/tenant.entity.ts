@@ -46,11 +46,11 @@ export class Tenant extends AbstractEntity {
   @Column({ nullable: true })
   tenantDatabaseId: number;
 
-  @ManyToOne(() => User, user => user.tenant)
+  @ManyToOne(() => User, user => user.tenant, { nullable: true })
   @JoinColumn({ name: 'creator_user_id' })
   user: User;
 
-  @OneToOne(() => DbServer, { eager: true, cascade: true })
+  @OneToOne(() => DbServer, { eager: true, cascade: true, nullable: true })
   @JoinColumn({ name: 'tenantDatabaseId', referencedColumnName: 'id' })
   dbServer: DbServer;
 }

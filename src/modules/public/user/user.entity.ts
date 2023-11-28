@@ -101,7 +101,7 @@ export class User extends AbstractEntity {
   @Column({ default: true })
   acceptReviewPromotionEmail: boolean;
 
-  @ManyToOne(() => Tenant, tenant => tenant.user)
+  @ManyToOne(() => Tenant, tenant => tenant.user, { nullable: true })
   @JoinColumn({ name: 'tenant_id' })
   tenant: Tenant;
 
