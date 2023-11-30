@@ -5,7 +5,6 @@ import { IResponse } from '../../../common/utils/response';
 import { Tenant } from './tenant.entity';
 import { AuthGuard } from '../../../guards/auth.guard';
 import { User } from '../user/user.entity';
-import { CurrentUser } from '../../../common/decorator/currentUser.decorator';
 import { Roles } from '../../../common/decorator/roles.decorator';
 import { RoleEnum } from '../../../enums/role.enum';
 import { RolesGuard } from '../../../guards/roles.guard';
@@ -17,10 +16,7 @@ export class TenantsController {
 
   @Post()
   @Roles(RoleEnum.Host)
-  async create(
-    @CurrentUser() user: User,
-    @Body() createTenantDto: CreateTenantDto,
-  ): Promise<IResponse<Tenant & { user: User }>> {
-    return this.tenantsService.create(createTenantDto, user);
+  async create(@Body() createTenantDto: CreateTenantDto): Promise<IResponse<Tenant & { user: User }>> {
+    return this.tenantsService.create(createTenantDto);
   }
 }

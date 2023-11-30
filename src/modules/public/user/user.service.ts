@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './user.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserCreateDto } from './user.dto';
 import { hash } from 'bcrypt';
@@ -34,8 +34,9 @@ export class UserService {
     };
   }
 
-  async findOne(key: string, value: string | number) {
-    return this.usersRepository.findOne({
+  async findOne(key: string, value: string | number, connection?: DataSource) {
+    const usersRepository = connection ? connection.getRepository(User) : this.usersRepository;
+    return usersRepository.findOne({
       where: {
         [key]: value,
       },
@@ -49,12 +50,13 @@ export class UserService {
     });
   }
 
-  async create(userCreate: UserCreateDto, role: RoleEnum): Promise<User> {
+  async create(userCreate: UserCreateDto, role: RoleEnum, connection?: DataSource): Promise<User> {
+    const usersRepository = connection ? connection.getRepository(User) : this.usersRepository;
     const hashPassword = await hash(userCreate.password, 10);
-    const newUser = this.usersRepository.create({ ...userCreate, password: hashPassword });
-    const createdUser = await this.usersRepository.save(newUser);
+    const newUser = usersRepository.create({ ...userCreate, password: hashPassword });
+    const createdUser = await usersRepository.save(newUser);
 
-    await this.userRoleService.create(createdUser.id, role);
+    await this.userRoleService.create(createdUser.id, role, connection);
     return createdUser;
   }
 }
