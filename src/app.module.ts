@@ -13,6 +13,8 @@ import { DbServerModule } from './modules/public/db-server/db-server.module';
 import { UserRoleModule } from './modules/public/user-role/user-role.module';
 import { RoleModule } from './modules/public/role/role.module';
 import { PermissionModule } from './modules/public/permission/permission.module';
+import { TestController } from './modules/public/test/test.controller';
+import { TestModule } from './modules/public/test/test.module';
 
 @Module({
   imports: [
@@ -32,8 +34,9 @@ import { PermissionModule } from './modules/public/permission/permission.module'
     UserRoleModule,
     RoleModule,
     PermissionModule,
+    TestModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, TestController],
   providers: [
     {
       provide: APP_INTERCEPTOR,
